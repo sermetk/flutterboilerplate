@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterboilerplate/modules/main/internet_not_found_page.dart';
 import 'package:flutterboilerplate/modules/users/user_detail_page.dart';
 import 'package:flutterboilerplate/modules/users/user_page.dart';
-import 'package:flutterboilerplate/views/internet_not_found_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
