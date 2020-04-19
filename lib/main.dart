@@ -8,7 +8,6 @@ import 'package:flutterboilerplate/modules/users/user_page.dart';
 import 'package:flutterboilerplate/repositories/navigation_service.dart';
 import 'package:flutterboilerplate/core/navigation/router.dart' as router;
 
-bool isLoggedIn;
 bool get isInDebugMode {
   var inDebugMode = false;
   assert(inDebugMode = true);
