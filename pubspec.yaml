@@ -32,7 +32,7 @@ dev_dependencies:
   equatable: ^0.6.0
   dio: ^3.0.7
   flutter_bloc: ^3.2.0
-  flutter_svg: ^0.15.0
+  flutter_svg: ^0.17.4
   get_it: ^3.0.3
   mockito: ^4.1.1
 

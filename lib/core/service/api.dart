@@ -1,17 +1,21 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:flutterboilerplate/core/service/http_client.dart';
 import 'package:flutterboilerplate/core/service/json_mapper.dart';
 import 'package:flutterboilerplate/core/service/service_result.dart';
 
 class ApiBuilder {
-final String baseUrl="jsonplaceholder.typicode.com";
+  final String baseUrl = "jsonplaceholder.typicode.com";
 
   Future<ServiceResult<T, K>> getAsync<T, K>(String endPoint,
       [Map<String, String> queryParameters]) async {
     var uri = Uri.https(baseUrl, endPoint, queryParameters);
     dio.Response<dynamic> response = await HttpClient.instance.client
-        .getUri(uri,
-            options: dio.Options(headers: HttpClient.instance.headers));
+        .getUri(uri, options: dio.Options(headers: HttpClient.instance.headers))
+        .catchError((e) {
+      return null;
+    });
 
     return generateResultFromResponse<T, K>(response);
   }
@@ -21,10 +25,13 @@ final String baseUrl="jsonplaceholder.typicode.com";
       [Map<String, String> queryParameters]) async {
     var uri = Uri.https(baseUrl, endPoint, queryParameters);
 
-    dio.Response<dynamic> response = await HttpClient.instance.client
-        .postUri(uri,
-            options: dio.Options(headers: HttpClient.instance.headers),
-            data: postedData);
+    dio.Response<dynamic> response = await HttpClient.instance.client.postUri(
+        uri,
+        options: dio.Options(headers: HttpClient.instance.headers),
+        data: postedData)
+        .catchError((e) {
+      return null;
+    });
 
     return generateResultFromResponse<T, K>(response);
   }
@@ -35,10 +42,13 @@ final String baseUrl="jsonplaceholder.typicode.com";
       Map<String, String> queryParameters}) async {
     var uri = Uri.https(baseUrl, endPoint, queryParameters);
 
-    dio.Response<dynamic> response = await HttpClient.instance.client
-        .putUri(uri,
-            options: dio.Options(headers: HttpClient.instance.headers),
-            data: postedData);
+    dio.Response<dynamic> response = await HttpClient.instance.client.putUri(
+        uri,
+        options: dio.Options(headers: HttpClient.instance.headers),
+        data: postedData)
+        .catchError((e) {
+      return null;
+    });
 
     return generateResultFromResponse<T, K>(response);
   }
@@ -47,18 +57,23 @@ final String baseUrl="jsonplaceholder.typicode.com";
       [Map<String, String> queryParameters]) async {
     var uri = Uri.https(baseUrl, endPoint, queryParameters);
 
-    dio.Response<dynamic> response = await HttpClient.instance.client
-        .deleteUri(uri,
-            options: dio.Options(headers: HttpClient.instance.headers));
+    dio.Response<dynamic> response = await HttpClient.instance.client.deleteUri(
+        uri,
+        options: dio.Options(headers: HttpClient.instance.headers))
+        .catchError((e) {
+      return null;
+    });
 
     return generateResultFromResponse<T, K>(response);
   }
 
   Future<ServiceResult<T, K>> generateResultFromResponse<T, K>(
-      dio.Response<dynamic> response) async { 
-    if (response.statusCode == 200) {
-     return ServiceResult<T, K>(
-              success: true, data: JsonMapper.fromJson<T, K>(response.data));
+      dio.Response<dynamic> response) async {
+    if (response == null) {
+      return null;
+    } else if (response.statusCode == 200) {
+      return ServiceResult<T, K>(
+          success: true, data: JsonMapper.fromJson<T, K>(response.data));
     } else if (response.statusCode == 401) {
       return null; //Refresh token and recall
     } else {

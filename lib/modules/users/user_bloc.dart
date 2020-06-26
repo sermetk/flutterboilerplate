@@ -14,7 +14,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (event is InitData) {
       yield Loading();
       var result = await _userService.getUsers();
-      if (result.success && result.data != null) {
+      if (result == null) {
+        yield Failure(error: "Unexpected error");
+      }
+      else if (result.success && result.data != null) {
         yield Loaded(data: result.data);
       } else if (result.success && result.data == null) {
         yield Empty();
